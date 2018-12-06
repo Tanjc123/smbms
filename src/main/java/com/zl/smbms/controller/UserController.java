@@ -186,6 +186,6 @@ public class UserController {
     @RequestMapping("adduser")
     public  String adduser(Smbms_user user){
 
-        return "user/useradd";
+        return "user/useraddsfsfsf";
     }
 }
