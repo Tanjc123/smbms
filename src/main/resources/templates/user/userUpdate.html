@@ -1,0 +1,115 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>超市订单管理系统</title>
+    <link type="text/css" rel="stylesheet" href="css/style.css" />
+    <link type="text/css" rel="stylesheet" href="css/public.css" />
+</head>
+<body>
+<!--头部-->
+    <header class="publicHeader">
+        <h1>超市订单管理系统</h1>
+        <div class="publicHeaderR">
+            <p><span>下午好！</span><span style="color: #fff21b"> 系统管理员</span> , 欢迎你！</p>
+            <a href="jsp/logout.do">退出</a>
+        </div>
+    </header>
+<!--时间-->
+    <section class="publicTime">
+        <span id="time">2015年1月1日 11:11  星期一</span>
+        <a href="#">温馨提示：为了能正常浏览，请使用高版本浏览器！（IE10+）</a>
+    </section>
+ <!--主体内容-->
+ <section class="publicMian ">
+     <div class="left">
+         <h2 class="leftH2"><span class="span1"></span>功能列表 <span></span></h2>
+         <nav>
+             <ul class="list">
+              <li ><a href="jsp/bill.do?method=query">订单管理</a></li>
+              <li><a href="jsp/provider.do?method=query">供应商管理</a></li>
+              <li><a href="jsp/user.do?method=query">用户管理</a></li>
+              <li><a href="">密码修改</a></li>
+              <li><a href="jsp/logout.do">退出系统</a></li>
+             </ul>
+         </nav>
+     </div>
+     <input type="hidden" id="path" name="path" value="/SMBMS"/>
+     <input type="hidden" id="referer" name="referer" value="http://localhost:8080jsp/user.do?method=query"/>
+    <div class="right">
+        <div class="location">
+            <strong>你现在所在的位置是:</strong>
+            <span>用户管理页面 >> 用户修改页面</span>
+        </div>
+        <div class="providerAdd">
+        <form id="userForm" name="userForm" method="post" action="updateuserisok">
+			<input type="hidden" name="method" value="modifyexe">
+			<input type="hidden" name="uid" value="13"/>
+			 <div>
+                    <label for="userName">用户名称：</label>
+                    <input th:value="${getuser.getUsername()}" type="text" name="username" id="username" >
+					<font color="red"></font>
+             </div>
+			 <div>
+                    <label >用户性别：</label>
+                    <select name="gender" id="gender">
+                              <option th:value="1" th:if="${getuser.getGender()} eq 1">男</option>
+                              <option th:value="2" th:if="${getuser.getGender()} eq 2" >女</option>
+                        <option th:value="1">男</option>
+                        <option th:value="2">女</option>
+
+
+					 </select>
+             </div>
+			 <div>
+                    <label >出生日期：</label>
+                    <input type="text" Class="Wdate" id="birthday" name="birthday" th:value="${getuser.getBirthday()}"
+					readonly="readonly" onclick="WdatePicker();">
+                    <font color="red"></font>
+              </div>
+			
+		       <div>
+                    <label >用户电话：</label>
+                    <input type="text" name="phone" id="phone" th:value="${getuser.getPhone()}">
+                    <font color="red"></font>
+               </div>
+                <div>
+                    <label >用户地址：</label>
+                    <input type="text" name="address" id="address" th:value="${getuser.getAddress()}">
+                </div>
+				<div>
+                    <label >用户角色：</label>
+                    <!-- 列出所有的角色分类 -->
+					<input type="hidden" th:value="${getuser.getId()}" id="id" name="id" />
+					<select name="userRole" id="userRole">
+                        <option th:if="${getuser.getUserrole()eq 1}">超级管理员</option>
+                        <option th:if="${getuser.getUserrole()eq 2}">经理</option>
+                        <option th:if="${getuser.getUserrole()eq 3}">普通用户</option>
+                        <option th:value="1">超级管理员</option>
+                        <option th:value="2">经理</option>
+                        <option th:value="3">普通用户</option>
+                    </select>
+        			<font color="red"></font>
+                </div>
+			 <div class="providerAddBtn">
+                    <input type="submit" name="save" id="save" value="保存" />
+                    <input type="button" id="back" name="back" onclick="javascript:history.back(-1)" value="返回"/>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+
+<footer class="footer">
+    版权归北大青鸟
+</footer>
+<script type="text/javascript" src="js/time.js"></script>
+<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="calendar/WdatePicker.js"></script>
+</body>
+</html>
+<script type="text/javascript" src="js/usermodify.js"></script>

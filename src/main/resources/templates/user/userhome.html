@@ -1,0 +1,165 @@
+
+
+
+
+
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>超市订单管理系统</title>
+    <link type="text/css" rel="stylesheet" href="css/style.css" />
+    <link type="text/css" rel="stylesheet" href="css/public.css" />
+</head>
+<body>
+<!--头部-->
+    <header class="publicHeader">
+        <h1>超市订单管理系统</h1>
+        <div class="publicHeaderR">
+            <p><span>下午好！</span><span style="color: #fff21b"> 系统管理员</span> , 欢迎你！</p>
+            <a href="jsp/logout.do">退出</a>
+        </div>
+    </header>
+<!--时间-->
+    <section class="publicTime">
+        <span id="time">2015年1月1日 11:11  星期一</span>
+        <a href="#">温馨提示：为了能正常浏览，请使用高版本浏览器！（IE10+）</a>
+    </section>
+ <!--主体内容-->
+ <section class="publicMian ">
+     <div class="left">
+         <h2 class="leftH2"><span class="span1"></span>功能列表 <span></span></h2>
+         <nav>
+             <ul class="list">
+              <li ><a href="jsp/bill.do?method=query">订单管理</a></li>
+              <li><a href="jsp/provider.do?method=query">供应商管理</a></li>
+              <li><a href="userhomelist">用户管理</a></li>
+              <li><a href="updatepwd">密码修改</a></li>
+              <li><a href="jsp/logout.do">退出系统</a></li>
+             </ul>
+         </nav>
+     </div>
+     <input type="hidden" id="path" name="path" value="/SMBMS"/>
+     <input type="hidden" id="referer" name="referer" value="http://localhost:8080jsp/provider.do?method=query&queryProCode=&queryProName="/>
+        <div class="right">
+            <div class="location">
+                <strong>你现在所在的位置是:</strong>
+                <span>用户管理页面</span>
+            </div>
+            <div class="search">
+           		<form method="get" action="getuserlistbyname">
+					<input name="method" value="query" class="input-text" type="hidden">
+					 <span>用户名：</span>
+					 <input name="username" class="input-text"	type="text" value="">
+					 
+					 <span>用户角色：</span>
+					 <select name="userrole">
+						
+						   <option value="0">--请选择--</option>
+						   
+						   		<option 
+						   		value="1">系统管理员</option>
+						   
+						   		<option 
+						   		value="2">经理</option>
+						   
+						   		<option 
+						   		value="3">普通员工</option>
+	        		</select>
+					 <input type="hidden" name="pageIndex" value="1"/>
+					 <input	value="查 询" type="submit" id="searchbutton">
+					 <a href="adduserinfo" >添加用户</a>
+				</form>
+            </div>
+            <!--用户-->
+            <table class="providerTable" cellpadding="0" cellspacing="0">
+                <tr class="firstTr">
+                    <th width="10%">用户编码</th>
+                    <th width="20%">用户名称</th>
+                    <th width="10%">性别</th>
+                    <th width="10%">年龄</th>
+                    <th width="10%">电话</th>
+                    <th width="10%">用户角色</th>
+                    <th width="30%">操作</th>
+                </tr>
+				<tr th:each="userlist:${page.getTuserList()}">
+					<td th:text="${userlist.usercode}">
+					<td th:text="${userlist.username}">
+					<td th:if="${userlist.gender} eq 1" th:text="男">
+					<td th:if="${userlist.gender} eq 2" th:text="女">
+					<td th:text="${userlist.birthday}">
+					<td th:text="${userlist.phone}">
+					<td th:if="${userlist.userrole} eq 1" th:text="超级管理员">
+					<td th:if="${userlist.userrole} eq 2" th:text="经理">
+					<td th:if="${userlist.userrole} eq 3" th:text="普通用户">
+					<td>
+                    <span><a class="viewProvider" th:href="@{'/userinfo?id='+${userlist.id}}" proid=1 proname=北京三木堂商贸有限公司><img
+							src="images/read.png" alt="查看" title="查看"/></a></span>
+						<span><a class="modifyProvider" th:href="@{'/userUpdate?id='+${userlist.id}}" proid=1 proname=北京三木堂商贸有限公司><img
+								src="images/xiugai.png" alt="修改" title="修改"/></a></span>
+						<span><a class="deleteProvider" href="javascript:;" proid=1 proname=北京三木堂商贸有限公司><img
+								src="images/schu.png" alt="删除" title="删除"/></a></span>
+					</td>
+				</tr>
+			</table>
+			<input type="hidden" id="totalPageCount" value="3"/>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+	
+</script>
+</head>
+<body>
+ 		<div class="page-bar">
+			<ul class="page-num-ul clearfix">
+				<li>共<nobr th:text="${page.getTotalCount()}"></nobr>条记录&nbsp;&nbsp; <nobr th:text="${page.getCurrPageNo()}"></nobr>/<nobr th:text="${page.getTotalPageCount()}"></nobr>页</li>
+				
+				<nobr th:if="${page.getCurrPageNo()} lt ${page.getTotalPageCount()}">
+					<a th:href="@{'/userhomelist?isfrom='+${page.getCurrPageNo()+1}}">下一页</a>&nbsp
+					<a th:href="@{'/userhomelist?isfrom='+${page.getTotalPageCount()}}">最后一页</a>
+
+				</nobr>&nbsp&nbsp
+
+				<nobr th:if="${page.getCurrPageNo()} gt 1">
+					<a th:href="@{'/userhomelist?isfrom='+${page.getCurrPageNo()-1}}">上一页</a>&nbsp
+					<a th:href="@{'/userhomelist?isfrom='+1}">第一页</a>
+
+				</nobr>
+			</ul>
+		 <span class="page-go-form"><label>跳转至</label>
+	     <input type="text" name="inputPage" id="inputPage" class="page-key" />页
+	     <button type="button" class="page-btn" onClick='jump_to(document.forms[0],document.getElementById("inputPage").value)'>GO</button>
+		</span>
+		</div> 
+</body>
+<script type="text/javascript" src="js/rollpage.js"></script>
+</html>
+        </div>
+    </section>
+
+<!--点击删除按钮后弹出的页面-->
+<div class="zhezhao"></div>
+<div class="remove" id="removeUse">
+    <div class="removerChid">
+        <h2>提示</h2>
+        <div class="removeMain">
+            <p>你确定要删除该用户吗？</p>
+            <a href="#" id="yes">确定</a>
+            <a href="#" id="no">取消</a>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    版权归北大青鸟
+</footer>
+<script type="text/javascript" src="js/time.js"></script>
+<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="calendar/WdatePicker.js"></script>
+</body>
+</html>
+<script type="text/javascript" src="js/userlist.js"></script>
